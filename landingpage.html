@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foresight — 轻量着陆页</title>
+  <meta name="description" content="一个可直接部署到 Cloudflare Pages 的响应式网站模板。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(8px); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100">
+  <!-- 顶部导航 -->
+  <header class="fixed top-0 inset-x-0 z-40">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mt-4 flex items-center justify-between rounded-2xl glass border border-slate-800/60 px-4 py-3">
+        <a href="#" class="flex items-center gap-2 font-semibold tracking-tight">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12c0-4.97 4.03-9 9-9s9 4.03 9 9-4.03 9-9 9" stroke="currentColor" stroke-width="1.5"/><path d="M4 16c3-4 7-6 12-6" stroke="currentColor" stroke-width="1.5"/></svg>
+          Foresight
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#features" class="hover:text-white/90 text-white/70">功能</a>
+          <a href="#pricing" class="hover:text-white/90 text-white/70">方案</a>
+          <a href="#contact" class="hover:text-white/90 text-white/70">联系</a>
+          <a href="#" class="rounded-xl bg-white text-slate-900 px-4 py-2 font-medium hover:bg-white/90 transition">立即体验</a>
+        </nav>
+        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-sm">菜单</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden mx-4 mt-2 rounded-2xl glass border border-slate-800/60 px-4 py-3">
+      <a href="#features" class="block py-2 text-white/80">功能</a>
+      <a href="#pricing" class="block py-2 text-white/80">方案</a>
+      <a href="#contact" class="block py-2 text-white/80">联系</a>
+      <a href="#" class="mt-2 block rounded-xl bg-white text-slate-900 px-4 py-2 text-center font-medium hover:bg-white/90 transition">立即体验</a>
+    </div>
+  </header>
+
+  <!-- 首屏 Hero -->
+  <section class="relative overflow-hidden pt-32">
+    <div class="absolute inset-0 -z-10">
+      <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-600/30 blur-3xl"></div>
+      <div class="absolute top-24 -right-24 h-72 w-72 rounded-full bg-fuchsia-600/20 blur-3xl"></div>
+    </div>
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">预测驱动的业务增长平台</h1>
+        <p class="mt-6 text-lg text-white/80">用更轻的方式接入预测模型与对话式助手。这个模板零后端、可直接部署到 Cloudflare Pages，并预留了 API 集成位点。</p>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <a href="#features" class="rounded-xl bg-white text-slate-900 px-5 py-3 font-semibold hover:bg-white/90 transition">查看功能</a>
+          <a href="#contact" class="rounded-xl border border-white/15 px-5 py-3 font-semibold hover:bg-white/10 transition">联系团队</a>
+        </div>
+      </div>
+
+      <!-- 预览卡片 -->
+      <div class="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[.02] p-6">
+          <h3 class="text-lg font-semibold">API 集成示例</h3>
+          <p class="mt-2 text-sm text-white/70">点击“模拟调用”查看请求/响应（仅前端演示）。</p>
+          <div class="mt-4 rounded-xl bg-black/40 p-4 font-mono text-sm">
+            <pre id="apiBox" class="whitespace-pre-wrap">{
+  "status": "idle",
+  "message": "点击下方按钮开始"
+}</pre>
+          </div>
+          <button id="mockBtn" class="mt-4 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-medium hover:bg-indigo-400 transition">模拟调用</button>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-white/[.02] p-6">
+          <h3 class="text-lg font-semibold">可视化卡片</h3>
+          <p class="mt-2 text-sm text-white/70">完全静态，适合作为营销/产品着陆页的起点。</p>
+          <ul class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <li class="rounded-xl border border-white/10 p-3">⚡️ 快速部署到 Cloudflare Pages</li>
+            <li class="rounded-xl border border-white/10 p-3">🔒 默认 HTTPS 与 CDN 加速</li>
+            <li class="rounded-xl border border-white/10 p-3">🧩 预留 API 钩子/环境变量位点</li>
+            <li class="rounded-xl border border-white/10 p-3">📈 开箱即用的分析面板（Cloudflare Analytics）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 功能 -->
+  <section id="features" class="py-20">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-white/10 p-6 bg-white/[.03]">
+          <h4 class="font-semibold">静态优先</h4>
+          <p class="mt-2 text-white/70 text-sm">无需服务器即可上线；如需后端，可迁移到 Cloudflare Workers / D1 / R2。</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-6 bg-white/[.03]">
+          <h4 class="font-semibold">一键回滚</h4>
+          <p class="mt-2 text-white/70 text-sm">通过 Pages 历史构建快速回退，降低发布风险。</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-6 bg-white/[.03]">
+          <h4 class="font-semibold">自定义域名</h4>
+          <p class="mt-2 text-white/70 text-sm">绑定你的域名，开启 WAF/缓存/重定向等站点规则。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方案 -->
+  <section id="pricing" class="py-10">
+    <div class="mx-auto max-w-5xl px-6 lg:px-8 text-center">
+      <h3 class="text-2xl font-bold">简单方案</h3>
+      <p class="mt-2 text-white/70">从免费开始，按需升级 Cloudflare 套餐与资源。</p>
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div class="rounded-2xl border border-white/10 p-6 bg-white/[.03]">
+          <h4 class="font-semibold">入门</h4>
+          <p class="mt-2 text-sm text-white/70">静态托管、CDN、HTTPS</p>
+          <p class="mt-4 text-3xl font-extrabold">¥0</p>
+        </div>
+        <div class="rounded-2xl border border-indigo-400/40 p-6 bg-indigo-500/10 ring-1 ring-indigo-400/30">
+          <h4 class="font-semibold">成长</h4>
+          <p class="mt-2 text-sm text-white/80">接入 KV/D1、Zero Trust、日志</p>
+          <p class="mt-4 text-3xl font-extrabold">按量</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-6 bg-white/[.03]">
+          <h4 class="font-semibold">企业</h4>
+          <p class="mt-2 text-sm text-white/70">SLA、WAF 规则、负载均衡</p>
+          <p class="mt-4 text-3xl font-extrabold">洽谈</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section id="contact" class="py-20">
+    <div class="mx-auto max-w-3xl px
