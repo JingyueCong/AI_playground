@@ -1,3 +1,220 @@
-<!doctype html><meta charset="utf-8">
-<title>Hello</title><h1>A new line</h1>
-<h1>Second line</h1>
+<!-- Scotch Atlas V1.2.2 (compact) -->
+<!doctype html><html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Scotch Atlas</title>
+<style>
+:root{--bg:#0a0a0c;--panel:#111418;--panel2:#0e1216;--text:#e9eef3;--muted:#9aa6b2;--brand:#9b111e;--brand2:#b61b29;--border:rgba(255,255,255,.08);--radius:14px;--shadow:0 8px 26px rgba(0,0,0,.3)}
+[data-theme=light]{--bg:#f7f9fb;--panel:#fff;--panel2:#f2f5f8;--text:#0c1420;--muted:#4b5563;--brand:#9b111e;--brand2:#b61b29;--border:rgba(15,23,42,.08);--shadow:0 8px 22px rgba(0,0,0,.08)}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font:15.5px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:var(--bg)}
+.app{display:grid;grid-template-columns:240px 1fr;height:100vh;overflow:hidden}
+.sidebar{display:flex;flex-direction:column;gap:10px;padding:16px 12px;background:linear-gradient(180deg,var(--panel),var(--panel2));border-right:1px solid var(--border)}
+.brand{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:var(--radius);background:rgba(255,255,255,.02);box-shadow:var(--shadow)}
+.logo{width:34px;height:34px;border-radius:9px;background:radial-gradient(100% 100% at 35% 20%,var(--brand2),var(--brand) 45%,#1f2a44);box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 6px 16px rgba(155,17,30,.25)}
+nav{display:grid;gap:8px;margin-top:4px}
+.nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-weight:700}
+.nav:hover{background:rgba(255,255,255,.04)}.nav.active{background:rgba(155,17,30,.12);border-color:rgba(155,17,30,.45)}
+.foot{margin-top:auto;color:var(--muted);font-size:12px;padding:0 6px}
+.main{position:relative;overflow:auto}
+.view{display:none;min-height:100%;padding:22px 24px}
+.view.active{display:block}
+.card{border:1px solid var(--border);border-radius:16px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));box-shadow:var(--shadow)}
+.btn{border:0;border-radius:999px;padding:10px 14px;font-weight:800;color:#fff;background:linear-gradient(180deg,var(--brand2),var(--brand));cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:rgba(155,17,30,.15);border:1px solid rgba(155,17,30,.35)}
+/* Chat */
+.chat-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-rows:auto 1fr auto;gap:10px;height:calc(100vh - 90px)}
+#log{white-space:pre-wrap;border:1px solid var(--border);border-radius:14px;padding:12px;background:rgba(255,255,255,.02);overflow:auto}
+.msg .role{font-weight:800;margin-right:6px}.user{color:var(--muted)}.assistant{color:var(--text)} /* assistant text white in dark, dark in light via var(--text) */
+.input{flex:1;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--text)}
+.chat-form{display:flex;gap:8px;position:sticky;bottom:0}
+/* Calendar (auto grows; no cutoff) */
+.cal{max-width:1100px;margin:0 auto;display:grid;gap:10px}
+.cal-head{display:flex;justify-content:space-between;align-items:center}
+.dow,.day{border:1px solid var(--border);border-radius:10px}
+.dow{padding:6px 0;text-align:center;color:var(--muted);font-weight:700}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{padding:6px;position:relative;background:rgba(255,255,255,.02)}
+.date{position:absolute;top:6px;right:8px;font-size:12px;color:var(--muted)}
+.events{display:grid;gap:6px;margin-top:18px}
+.ev{font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(155,17,30,.16);border:1px solid rgba(155,17,30,.35);cursor:pointer}
+/* Library + Collaboration + Tutoring */
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tab{padding:8px 12px;border:1px solid var(--border);border-radius:999px;cursor:pointer;background:transparent}
+.tab.active{background:rgba(155,17,30,.12);border-color:rgba(155,17,30,.45)}
+.card-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.item h4{margin:0 0 6px}
+.small{color:var(--muted);font-size:12px}
+.tutor{display:grid;place-items:center;height:60vh;background:var(--panel2);border:1px solid var(--border);border-radius:14px}
+/* Floating dots (home only) */
+.dot{position:fixed;top:-200px;width:80px;height:80px;border-radius:50%;opacity:.5;pointer-events:none;z-index:0;filter:blur(1px)}
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 1fr;gap:16px;align-items:center;max-width:1100px;margin:4px auto}
+@media (max-width:980px){.app{grid-template-columns:78px 1fr}.brand>div{display:none}.grid3,.grid2,.hero{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo"></div><div><div style="font-weight:800">Scotch Atlas</div><small style="color:var(--muted)">Extracurricular assistant</small></div></div>
+    <nav>
+      <button class="nav active" data-go="home">Home</button>
+      <button class="nav" data-go="chat">Chat</button>
+      <button class="nav" data-go="calendar">Calendar</button>
+      <button class="nav" data-go="library">Library</button>
+      <button class="nav" data-go="collab">Collaboration</button>
+      <button class="nav" data-go="tutoring">Tutoring</button>
+    </nav>
+    <div class="foot">© <span id="year"></span> · <button id="themeDark" class="tab">Dark</button><button id="themeLight" class="tab">Light</button></div>
+  </aside>
+
+  <main class="main">
+    <!-- HOME -->
+    <section id="home" class="view active">
+      <div class="hero">
+        <div class="card">
+          <div class="badge">Welcome</div>
+          <h1>An AI guide to Scotch College clubs & competitions</h1>
+          <p class="small">Ask about meeting times, rooms, try-outs, deadlines, contacts, and how to get involved. Use Library to browse, Calendar to plan, Collaboration to publish passion projects.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-go="chat">Open Chat</button><button class="btn ghost" data-go="library">Browse Library</button></div>
+        </div>
+        <div class="card"><div style="height:240px;border:1px dashed var(--border);border-radius:12px;display:grid;place-items:center;color:var(--muted)">Image placeholder</div></div>
+      </div>
+      <div class="grid3" style="max-width:1100px;margin:0 auto">
+        <div class="card"><h3>What I cover</h3><p class="small">Clubs, competitions, Scotch Explore, sports, sign-ups, staff contacts, reminders.</p></div>
+        <div class="card"><h3>How I help</h3><p class="small">Short answers, email drafts, add-to-calendar, quick filters.</p></div>
+        <div class="card"><h3>Up next</h3><p class="small">Sync to device calendar; share schedules.</p></div>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section id="chat" class="view">
+      <div class="chat-wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">Chat</div><div class="small">Model: GPT-5 Thinking</div></div>
+        <div id="log" aria-live="polite"></div>
+        <form id="chatForm" class="chat-form"><input id="prompt" class="input" placeholder="Type your message…" required/><button class="btn" type="submit">Send</button></form>
+        <div class="small" style="text-align:center;color:var(--muted)">Scotch Atlas can make mistakes — check important info with staff.</div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="calendar" class="view">
+      <div class="cal">
+        <div class="cal-head"><div style="font-weight:800"><span id="month"></span> <span id="yearLabel"></span></div>
+          <div style="display:flex;gap:6px"><button class="btn ghost" id="prev">◀</button><button class="btn ghost" id="today">Today</button><button class="btn ghost" id="next">▶</button></div></div>
+        <div class="grid7" id="dow"></div>
+        <div class="grid7" id="grid"></div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section id="library" class="view">
+      <div class="toolbar"><span class="small">Library:</span>
+        <button class="tab active" data-tab="clubs">Clubs</button>
+        <button class="tab" data-tab="comps">Competitions</button>
+        <button class="tab" data-tab="explore">Scotch Explore</button>
+        <button class="tab" data-tab="sport">Scotch Sport</button>
+        <button class="tab" data-tab="request">Request</button>
+      </div>
+      <div id="libBody"></div>
+    </section>
+
+    <!-- COLLABORATION -->
+    <section id="collab" class="view">
+      <div class="card" style="max-width:1000px;margin:0 auto 12px">
+        <h3>Collaboration (passion projects)</h3>
+        <p class="small">Create project cards with title, team, notes, and status. Click “Submit idea” to send for staff review (1-minute cooldown).</p>
+      </div>
+      <div class="card" style="max-width:800px;margin:0 auto">
+        <div class="grid2">
+          <input id="pTitle" class="input" placeholder="Project title"/><input id="pTeam" class="input" placeholder="Team members"/>
+        </div>
+        <textarea id="pNotes" class="input" style="margin-top:8px;height:120px" placeholder="What is it? Why now? What help is needed?"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="submitIdea">Submit idea</button><span id="cooldown" class="small" style="align-self:center;color:var(--muted)"></span></div>
+        <div id="projList" class="card-row" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- TUTORING -->
+    <section id="tutoring" class="view">
+      <div class="tutor"><div class="small">Under development</div></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ===== Utilities & Theme ===== */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],byId=id=>document.getElementById(id);
+byId('year').textContent=new Date().getFullYear();
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);$$('.tab').forEach(b=>b.classList.toggle('active',b.id==='theme'+t[0].toUpperCase()+t.slice(1)))}
+setTheme(localStorage.getItem('theme')||'dark');byId('themeDark').onclick=()=>setTheme('dark');byId('themeLight').onclick=()=>setTheme('light');
+
+/* ===== Nav + floating dots ===== */
+let dotTimer=null;function rnd(n,m){return Math.random()*(m-n)+n}
+function spawnDots(){stopDots();dotTimer=setInterval(()=>{if(byId('home').classList.contains('active')){const d=document.createElement('div');d.className='dot';const size=rnd(80,220);d.style.width=d.style.height=size+'px';d.style.background=`hsl(${Math.floor(rnd(0,360))}deg 70% 55% / .5)`;const side=Math.random()<.5?'left':'right';const startX=side==='left'?-size-40:innerWidth+40;const y=rnd(40,innerHeight-40);d.style.left=startX+'px';d.style.top=y+'px';document.body.appendChild(d);const endX=side==='left'?-innerWidth-2*size:2*size;d.animate([{transform:'translateX(0)'},{transform:`translateX(${side==='left'?'-':'+'}${endX}px)`}],{duration:rnd(16000,24000),easing:'linear'});setTimeout(()=>d.remove(),24000)}},rnd(1200,2200))}
+function stopDots(){if(dotTimer){clearInterval(dotTimer);dotTimer=null}$$('.dot').forEach(el=>el.remove())}
+function show(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id));$$('.nav').forEach(b=>b.classList.toggle('active',b.dataset.go===id));(id==='home')?spawnDots():stopDots();history.pushState({},'',`#${id}`)}
+$$('.nav, .btn[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));show((location.hash||'#home').slice(1));
+
+/* ===== Chat (mock streaming) ===== */
+const log=byId('log');const historyMsgs=[{role:'system',content:'You are Scotch Atlas.'}];
+function addMsg(role,txt){const div=document.createElement('div');div.className='msg';div.innerHTML=`<span class="role ${role}">${role==='assistant'?'Assistant':'You'}:</span>${txt}`;log.appendChild(div);log.scrollTop=log.scrollHeight}
+byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;byId('prompt').value='';addMsg('user',t);historyMsgs.push({role:'user',content:t});const line=document.createElement('div');line.className='msg';line.innerHTML=`<span class="role assistant">Assistant:</span><span id="stream"></span>`;log.appendChild(line);const span=line.querySelector('#stream');const reply="(Demo) I can show clubs, competitions, Explore and Sport from the Library, and add them to your calendar.";for(const ch of reply){await new Promise(r=>setTimeout(r,10));span.textContent+=ch}historyMsgs.push({role:'assistant',content:reply})});
+
+/* ===== Calendar ===== */
+const monthEl=byId('month'),yearEl=byId('yearLabel'),grid=byId('grid'),dow=byId('dow');['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;dow.appendChild(e)});
+const LS='scotch-events',events=JSON.parse(localStorage.getItem(LS)||'{}');const iso=d=>d.toISOString().slice(0,10);let cur=new Date();cur.setDate(1);
+function saveEv(){localStorage.setItem(LS,JSON.stringify(events))}
+function monthMatrix(d){const y=d.getFullYear(),m=d.getMonth(),f=new Date(y,m,1);let s=(f.getDay()+6)%7;const start=new Date(y,m,1-s);return Array.from({length:42},(_,i)=>new Date(start.getFullYear(),start.getMonth(),start.getDate()+i))}
+function renderCal(){monthEl.textContent=cur.toLocaleString(undefined,{month:'long'});yearEl.textContent=cur.getFullYear();grid.innerHTML='';const thisM=cur.getMonth();monthMatrix(cur).forEach(dt=>{const c=document.createElement('div');c.className='day';if(dt.getMonth()!==thisM)c.style.opacity=.45;c.innerHTML=`<div class="date">${dt.getDate()}</div><div class="events"></div>`;const k=iso(dt),wrap=c.querySelector('.events');(events[k]||[]).forEach((ev,idx)=>{const p=document.createElement('div');p.className='ev';p.textContent=ev.title;p.title=ev.notes||'';p.onclick=e=>{e.stopPropagation();editEvent(k,idx)};wrap.appendChild(p)});c.onclick=()=>editEvent(k,null);grid.appendChild(c)})}
+function editEvent(date,idx){const old=(idx!=null&&(events[date]||[])[idx])||{title:'',notes:''};const title=prompt('Event',old.title);if(!title)return;const notes=prompt('Notes',old.notes||'')||'';if(!events[date])events[date]=[];if(idx!=null)events[date][idx]={...old,title,notes};else events[date].push({title,notes});saveEv();renderCal()}
+byId('prev').onclick=()=>{cur.setMonth(cur.getMonth()-1);renderCal()};byId('next').onclick=()=>{cur.setMonth(cur.getMonth()+1);renderCal()};byId('today').onclick=()=>{const n=new Date();cur=new Date(n.getFullYear(),n.getMonth(),1);renderCal()};renderCal();
+
+/* ===== Library (editable data lists) ===== */
+const data={ // Edit/add items here ↓
+  clubs:[ // Clubs
+    {name:'Media Club',when:'Fri 8:00',where:'English Dept',contact:'Arial Bold',desc:'Learn media skills; film & edit; current project: advice documentary.',beginner:true},
+    {name:'The Maths Club',when:'Mon 1:00',where:'E1.14',contact:'David Meres',desc:'Intermediate maths help, problem sets, comp prep.',beginner:'intermediate'},
+    {name:'AIR (Engineering)',when:'Tue 8:00',where:'Room 31',contact:'Mr Italic',desc:'Hands-on engineering; sustainable drone term brief.',beginner:'some knowledge'}
+  ],
+  comps:[ // Competitions
+    {name:'Maths Plus',date:'2025-08-26',where:'Sports Hall',desc:'Intermediate maths contest; logic + olympiad mix.'},
+    {name:'Supreme Maths',date:'TBA',where:'TBA',desc:'Invite-only olympiad level; 6 questions/3 hours.'},
+    {name:'DAV Debating',date:'2025-09-20',where:'Lower Gym',desc:'VIC debating rounds across levels.'}
+  ],
+  explore:[ // Scotch Explore
+    {name:'Bushwalking – Grampians',when:'Term 4 W3',where:'Outdoor Ed',desc:'Planning, gear, day hikes.'},
+    {name:'Podcast Lab',when:'Term 4 W5',where:'JFA Studio',desc:'Record, edit, publish mini-series.'}
+  ],
+  sport:[ // Sports
+    {name:'Swimming Squad',when:'Mon/Wed 7:00',where:'Pool',desc:'Training + meets; fitness focus.'},
+    {name:'Table Tennis Social',when:'Fri 1:10',where:'Memorial Hall',desc:'Casual play; beginners welcome.'}
+  ]
+};
+function renderList(kind){const wrap=byId('libBody');wrap.innerHTML='';if(kind==='request'){return renderRequest()}
+const arr=data[kind];const row=document.createElement('div');row.className='card-row';
+arr.forEach(item=>{const c=document.createElement('div');c.className='card item';
+const body=(kind==='clubs')?`<div class="small">${item.when} · ${item.where}</div><h4>${item.name}</h4><div class="small">Contact: ${item.contact}</div><p class="small">${item.desc}</p>`:
+(kind==='comps')?`<div class="small">${item.date} · ${item.where}</div><h4>${item.name}</h4><p class="small">${item.desc}</p>`:
+`<div class="small">${item.when} · ${item.where}</div><h4>${item.name}</h4><p class="small">${item.desc}</p>`;
+c.innerHTML=body+`<div style="display:flex;gap:8px;margin-top:8px"><button class="btn" data-add='${encodeURIComponent(JSON.stringify({title:item.name,notes:(item.when||item.date)+' · '+item.where}))}'>Add to calendar</button><button class="btn ghost">Details</button></div>`;
+row.appendChild(c)});wrap.appendChild(row);
+$$('[data-add]').forEach(b=>b.onclick=()=>{const ev=JSON.parse(decodeURIComponent(b.dataset.add));const d=prompt('Date (YYYY-MM-DD)');if(!d)return;(events[d]=events[d]||[]).push({title:ev.title,notes:ev.notes});saveEv();alert('Added to calendar')})}
+function renderRequest(){const box=document.createElement('div');box.className='card';
+box.innerHTML=`<h3>Requests & Reports</h3><div class="toolbar"><button class="tab active" data-r="report">Report misinformation</button><button class="tab" data-r="addClub">Add missing club</button><button class="tab" data-r="addComp">Add missing competition</button></div><div id="rBody"></div>`;
+byId('libBody').appendChild(box);
+function form(type){const rb=byId('rBody');rb.innerHTML='';if(type==='report'){rb.innerHTML=`<textarea class="input" style="height:120px" placeholder="Describe the incorrect info..."></textarea><div style="margin-top:8px"><button class="btn">Submit</button></div>`}
+if(type==='addClub'){rb.innerHTML=`<input class="input" placeholder="Club name"/><input class="input" placeholder="Contact info"/><textarea class="input" style="height:100px" placeholder="Description (what it does, beginner?)"></textarea><div style="margin-top:8px"><button class="btn">Submit</button></div>`}
+if(type==='addComp'){rb.innerHTML=`<input class="input" placeholder="Competition name"/><input class="input" placeholder="Date (YYYY-MM-DD or TBA)"/><textarea class="input" style="height:100px" placeholder="What is it? Requirements?"></textarea><div style="margin-top:8px"><button class="btn">Submit</button></div>`}}
+form('report');$$('[data-r]').forEach(b=>b.onclick=()=>{$$('[data-r]').forEach(x=>x.classList.toggle('active',x===b));form(b.dataset.r)})}
+$$('#library .tab').forEach(b=>b.addEventListener('click',()=>{$$(`#library .tab`).forEach(x=>x.classList.toggle('active',x===b));renderList(b.dataset.tab)}));renderList('clubs');
+
+/* ===== Collaboration: submit cooldown and list ===== */
+const plist=byId('projList');let lockUntil=0;
+function addProject(p){const card=document.createElement('div');card.className='card item';card.innerHTML=`<h4>${p.title}</h4><div class="small">Team: ${p.team||'—'}</div><p class="small">${p.notes||''}</p><span class="badge">Draft</span>`;plist.prepend(card)}
+byId('submitIdea').onclick=()=>{const now=Date.now();if(now<lockUntil){byId('cooldown').textContent='Please wait before submitting again.';return}
+const title=byId('pTitle').value.trim();if(!title)return alert('Add a title');addProject({title,team:byId('pTeam').value.trim(),notes:byId('pNotes').value.trim()});byId('pTitle').value=byId('pTeam').value=byId('pNotes').value='';lockUntil=now+60*1000;byId('cooldown').textContent='Submitted. Cooldown 1 minute.';setTimeout(()=>byId('cooldown').textContent='',60000)};
+</script>
+</body>
+</html>
