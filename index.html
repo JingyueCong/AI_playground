@@ -53,6 +53,7 @@ nav{display:grid;gap:8px;margin-top:4px}
 .hero{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 1fr;gap:16px;align-items:center;max-width:1100px;margin:4px auto}
 @media (max-width:980px){.app{grid-template-columns:78px 1fr}.brand>div{display:none}.grid3,.grid2,.hero{grid-template-columns:1fr}}
 </style>
+<script src="config.js"></script>
 </head>
 <body>
 <div class="app">
@@ -91,7 +92,8 @@ nav{display:grid;gap:8px;margin-top:4px}
     <!-- CHAT -->
     <section id="chat" class="view">
       <div class="chat-wrap">
-        <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">Chat</div><div class="small">Model: GPT-5 Thinking</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">Chat</div><div class="small" id="modelInfo">Model: GPT-4</div></div>
+        <div id="apiKeyContainer" style="margin-bottom:10px;display:none"><input id="apiKey" type="password" class="input" placeholder="输入 OpenAI API Key (保存到本地)" style="font-size:12px"/><button class="btn" id="saveKey" style="margin-top:6px;padding:6px 12px;font-size:12px">保存 Key</button></div>
         <div id="log" aria-live="polite"></div>
         <form id="chatForm" class="chat-form"><input id="prompt" class="input" placeholder="Type your message…" required/><button class="btn" type="submit">Send</button></form>
         <div class="small" style="text-align:center;color:var(--muted)">Scotch Atlas can make mistakes — check important info with staff.</div>
@@ -157,10 +159,25 @@ function stopDots(){if(dotTimer){clearInterval(dotTimer);dotTimer=null}$$('.dot'
 function show(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id));$$('.nav').forEach(b=>b.classList.toggle('active',b.dataset.go===id));(id==='home')?spawnDots():stopDots();history.pushState({},'',`#${id}`)}
 $$('.nav, .btn[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));show((location.hash||'#home').slice(1));
 
-/* ===== Chat (mock streaming) ===== */
-const log=byId('log');const historyMsgs=[{role:'system',content:'You are Scotch Atlas.'}];
+/* ===== Chat (OpenAI API) ===== */
+const log=byId('log');const historyMsgs=[{role:'system',content:'You are Scotch Atlas, an AI guide to Scotch College clubs & competitions. Be helpful and concise.'}];
 function addMsg(role,txt){const div=document.createElement('div');div.className='msg';div.innerHTML=`<span class="role ${role}">${role==='assistant'?'Assistant':'You'}:</span>${txt}`;log.appendChild(div);log.scrollTop=log.scrollHeight}
-byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;byId('prompt').value='';addMsg('user',t);historyMsgs.push({role:'user',content:t});const line=document.createElement('div');line.className='msg';line.innerHTML=`<span class="role assistant">Assistant:</span><span id="stream"></span>`;log.appendChild(line);const span=line.querySelector('#stream');const reply="(Demo) I can show clubs, competitions, Explore and Sport from the Library, and add them to your calendar.";for(const ch of reply){await new Promise(r=>setTimeout(r,10));span.textContent+=ch}historyMsgs.push({role:'assistant',content:reply})});
+// 获取 API Key（优先级：config.js > 输入框 > localStorage）
+function getApiKey(){const configKey=typeof CONFIG!=='undefined'&&CONFIG.OPENAI_API_KEY&&CONFIG.OPENAI_API_KEY.trim()&&CONFIG.OPENAI_API_KEY!=='sk-your-api-key-here'?CONFIG.OPENAI_API_KEY:null;if(configKey)return configKey;const inputKey=byId('apiKey').value.trim();if(inputKey)return inputKey;return localStorage.getItem('openai_api_key')}
+// 初始化：如果 config.js 中没有 API Key，显示输入框
+(function initChat(){const configKey=getApiKey();const apiKeyContainer=byId('apiKeyContainer');const modelInfo=byId('modelInfo');if(typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL){modelInfo.textContent='Model: '+CONFIG.OPENAI_MODEL}
+if(!configKey||configKey==='sk-your-api-key-here'){apiKeyContainer.style.display='block';const savedKey=localStorage.getItem('openai_api_key');if(savedKey)byId('apiKey').value=savedKey}else{apiKeyContainer.style.display='none'}})();
+// 保存 Key 按钮
+byId('saveKey').onclick=()=>{const key=byId('apiKey').value.trim();if(key){localStorage.setItem('openai_api_key',key);alert('API Key saved on local storage')}else{alert('please input API Key')}}
+// 表单提交
+byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;const apiKey=getApiKey();if(!apiKey||apiKey==='sk-your-api-key-here'){alert('please config openai_api in config.js');return}
+const model=typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL?CONFIG.OPENAI_MODEL:'gpt-4';
+byId('prompt').value='';addMsg('user',t);historyMsgs.push({role:'user',content:t});const line=document.createElement('div');line.className='msg';line.innerHTML=`<span class="role assistant">Assistant:</span><span id="stream"></span>`;log.appendChild(line);const span=line.querySelector('#stream');span.textContent='Thinking...';
+try{const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({model:model,messages:historyMsgs.slice(-10),stream:true})});
+if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'API falied')}
+const reader=res.body.getReader();const decoder=new TextDecoder();let buffer='';span.textContent='';
+while(true){const{done,value}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});const lines=buffer.split('\n');buffer=lines.pop();
+for(const line of lines){if(line.startsWith('data: ')&&line!=='data: [DONE]'){try{const data=JSON.parse(line.slice(6));const delta=data.choices[0]?.delta?.content;if(delta){span.textContent+=delta;log.scrollTop=log.scrollHeight}}catch(e){}}}}const fullReply=span.textContent;historyMsgs.push({role:'assistant',content:fullReply})}catch(err){span.textContent='error: '+err.message;console.error(err)}});
 
 /* ===== Calendar ===== */
 const monthEl=byId('month'),yearEl=byId('yearLabel'),grid=byId('grid'),dow=byId('dow');['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;dow.appendChild(e)});
