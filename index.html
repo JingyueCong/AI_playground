@@ -93,7 +93,6 @@ nav{display:grid;gap:8px;margin-top:4px}
     <section id="chat" class="view">
       <div class="chat-wrap">
         <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">Chat</div><div class="small" id="modelInfo">Model: GPT-4</div></div>
-        <div id="apiKeyContainer" style="margin-bottom:10px;display:none"><input id="apiKey" type="password" class="input" placeholder="输入 OpenAI API Key (保存到本地)" style="font-size:12px"/><button class="btn" id="saveKey" style="margin-top:6px;padding:6px 12px;font-size:12px">保存 Key</button></div>
         <div id="log" aria-live="polite"></div>
         <form id="chatForm" class="chat-form"><input id="prompt" class="input" placeholder="Type your message…" required/><button class="btn" type="submit">Send</button></form>
         <div class="small" style="text-align:center;color:var(--muted)">Scotch Atlas can make mistakes — check important info with staff.</div>
@@ -170,16 +169,13 @@ return{role:'system',content:systemContent}}
 // 初始化消息历史
 historyMsgs=[getSystemMessage()];
 function addMsg(role,txt){const div=document.createElement('div');div.className='msg';div.innerHTML=`<span class="role ${role}">${role==='assistant'?'Assistant':'You'}:</span>${txt}`;log.appendChild(div);log.scrollTop=log.scrollHeight}
-// 获取 API Key（优先级：config.js > 输入框 > localStorage）
-function getApiKey(){const configKey=typeof CONFIG!=='undefined'&&CONFIG.OPENAI_API_KEY&&CONFIG.OPENAI_API_KEY.trim()&&CONFIG.OPENAI_API_KEY!=='sk-your-api-key-here'?CONFIG.OPENAI_API_KEY:null;if(configKey)return configKey;const inputKey=byId('apiKey').value.trim();if(inputKey)return inputKey;return localStorage.getItem('openai_api_key')}
+// 使用 Cloudflare Pages Function 代理（API Key 在后端，不暴露给前端）
+const API_ENDPOINT='/api/chat';
 // 初始化：加载数据集并设置 UI
-(async function initChat(){const loaded=await loadDataset();const configKey=getApiKey();const apiKeyContainer=byId('apiKeyContainer');const modelInfo=byId('modelInfo');if(typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL){modelInfo.textContent='Model: '+CONFIG.OPENAI_MODEL}
-if(!configKey||configKey==='sk-your-api-key-here'){apiKeyContainer.style.display='block';const savedKey=localStorage.getItem('openai_api_key');if(savedKey)byId('apiKey').value=savedKey}else{apiKeyContainer.style.display='none'}
+(async function initChat(){const loaded=await loadDataset();const modelInfo=byId('modelInfo');const apiKeyContainer=byId('apiKeyContainer');apiKeyContainer.style.display='none';if(typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL){modelInfo.textContent='Model: '+CONFIG.OPENAI_MODEL}else{modelInfo.textContent='Model: GPT-4'}
 if(loaded){addMsg('system','Hi I am the Assistant, I am able to answer questions about Scotch College!')}else{addMsg('system','Warning: Could not load dataset.json. Answers may not be accurate.')}})();
-// 保存 Key 按钮
-byId('saveKey').onclick=()=>{const key=byId('apiKey').value.trim();if(key){localStorage.setItem('openai_api_key',key);alert('API Key saved on local storage')}else{alert('please input API Key')}}
 // 表单提交
-byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;const apiKey=getApiKey();if(!apiKey||apiKey==='sk-your-api-key-here'){alert('please config openai_api in config.js');return}
+byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;
 const model=typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL?CONFIG.OPENAI_MODEL:'gpt-4';
 byId('prompt').value='';addMsg('user',t);historyMsgs.push({role:'user',content:t});
 // 确保系统消息始终在第一条，并包含最新的数据集
@@ -187,8 +183,8 @@ const systemMsg=getSystemMessage();if(historyMsgs[0].role!=='system'){historyMsg
 // 确保不超过上下文限制，但保留系统消息和最近的对话
 const messagesToSend=[historyMsgs[0],...historyMsgs.slice(-11)];
 const line=document.createElement('div');line.className='msg';line.innerHTML=`<span class="role assistant">Assistant:</span><span id="stream"></span>`;log.appendChild(line);const span=line.querySelector('#stream');span.textContent='Thinking...';
-try{const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({model:model,messages:messagesToSend,stream:true})});
-if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'API failed')}
+try{const res=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:model,messages:messagesToSend,stream:true})});
+if(!res.ok){const err=await res.json().catch(()=>({error:{message:'API request failed'}}));throw new Error(err.error?.message||'API failed')}
 const reader=res.body.getReader();const decoder=new TextDecoder();let buffer='';span.textContent='';
 while(true){const{done,value}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});const lines=buffer.split('\n');buffer=lines.pop();
 for(const line of lines){if(line.startsWith('data: ')&&line!=='data: [DONE]'){try{const data=JSON.parse(line.slice(6));const delta=data.choices[0]?.delta?.content;if(delta){span.textContent+=delta;log.scrollTop=log.scrollHeight}}catch(e){}}}}const fullReply=span.textContent;historyMsgs.push({role:'assistant',content:fullReply})}catch(err){span.textContent='Error: '+err.message;console.error(err)}});

@@ -1,0 +1,436 @@
+{
+    "general_information": {
+      "clubs_policy": {
+        "runs_every_week": true,
+        "exceptions": ["first_week_maybe_no_clubs", "last_week_maybe_no_clubs", "exam_weeks_off"],
+        "exam_weeks_off_detail": {"term": [2, 4], "last_weeks": 3}
+      },
+      "school": {
+        "name": "Scotch College",
+        "location": {"city": "Melbourne", "state": "Victoria", "country": "Australia"},
+        "terms_per_year": 4,
+        "approx_weeks_per_term": 9,
+        "terms": [
+          {"term": 1, "approx_dates": {"start": "Jan 31", "end": "Apr 04"}},
+          {"term": 2, "approx_dates": {"start": "Apr 23", "end": "Jun 27"}},
+          {"term": 3, "approx_dates": {"start": "Jul 22", "end": "Sep 19"}},
+          {"term": 4, "approx_dates": {"start": "Oct 07", "end": "Dec 05"}}
+        ],
+        "semesters": [
+          {"semester": 1, "terms": [1, 2]},
+          {"semester": 2, "terms": [3, 4]}
+        ],
+        "authority": "Victorian Minister for Education schedule",
+        "timetable": {
+          "cycle_days": 10,
+          "periods_per_day": 6,
+          "day_structure": [
+            {"name": "Period 1", "start": "08:35", "end": "09:25"},
+            {"name": "Period 2", "start": "09:30", "end": "10:20"},
+            {"name": "Assembly/Tutor/Form/House", "start": "10:20", "end": "10:50"},
+            {"name": "Recess", "start": "10:50", "end": "11:05"},
+            {"name": "Period 3", "start": "11:10", "end": "12:00"},
+            {"name": "Period 4", "start": "12:05", "end": "12:55"},
+            {"name": "Lunch", "start": "12:55", "end": "13:40"},
+            {"name": "Period 5", "start": "13:45", "end": "14:35"},
+            {"name": "Period 6", "start": "14:40", "end": "15:30"}
+          ]
+        }
+      },
+      "contact": {
+        "address": "1 Morrison Street, Hawthorn VIC 3122",
+        "telephone": "(03) 9810 4321",
+        "fax": "(03) 9810 4333",
+        "website": "http://www.scotch.vic.edu.au",
+        "canvas": "https://scotch.instructure.com"
+      },
+      "participation_estimates": {
+        "students_with_competition_experience_pct": 40,
+        "students_with_club_experience_pct": 15,
+        "typical_users": {"school_section": "Senior School", "year_levels": ["Year 7","Year 8","Year 9","Year 10","Year 11","Year 12"]}
+      },
+      "year_level_recommendations": [
+        {"year": 7, "recommendation": "strongly_recommend", "rationale": "most relaxed; most spare time"},
+        {"year": 8, "recommendation": "strongly_recommend", "rationale": "still relaxed; maturing; explore new things"},
+        {"year": 9, "recommendation": "strongly_recommend", "rationale": "have time; more academic focus; try hobbies/prep for VCE"},
+        {"year": 10, "recommendation": "recommend", "rationale": "busier; can still join/lead clubs; more mature"},
+        {"year": 11, "recommendation": "optional_recommend", "rationale": "busy; join if fits interest"},
+        {"year": 12, "recommendation": "light_recommend", "rationale": "very busy with VCE; only if truly want"}
+      ],
+      "sports_requirement": {
+        "all_students_required": true,
+        "seasons": [
+          {"name": "Summer", "terms": [1], "also_runs": ["Term 4 (sometimes)", "Term 1 of next year (connected)"]},
+          {"name": "Winter", "terms": [2], "extra": "first 3 weeks of Term 3"},
+          {"name": "Spring", "terms": ["rest of Term 3"]}
+        ],
+        "main_seasons": ["Summer", "Winter"]
+      },
+      "scotch_explore": {
+        "required": true,
+        "duration": "roughly_one_term",
+        "may_not_start_at_term_start": true,
+        "time_slot": {"day": "Thursday", "periods": [5, 6]},
+        "description": "extension activity students can pick"
+      },
+      "campus_overview": {
+        "setting": "Along Callantina Road beside the Yarra River",
+        "precincts": ["Senior School", "Middle School", "Junior School"],
+        "key_facilities": [
+          {"name": "Lithgow Centre", "grid": ["B3","C3"], "role": "central hub for academic/administrative"},
+          {"name": "Graham Room", "grid": ["C3","C4"]},
+          {"name": "James Forbes Academy", "grid": ["C3","C4"], "role": "music, theatre, performing arts"}
+        ],
+        "additional_facilities": [
+          {"name": "Tolson Centre", "grid": ["D2","E2"], "role": "smaller academic facility (Senior School)"},
+          {"name": "Meares Oval", "grid": ["A4","B5"]},
+          {"name": "Main Oval", "grid": ["C4","D5"]},
+          {"name": "Melville Oval", "grid": ["C5","D6"]},
+          {"name": "McKendrick Oval", "grid": ["E4","F5"]},
+          {"name": "Rugby Oval", "grid": ["E6","F6"], "near": "Yarra River"}
+        ],
+        "northern_specialised_buildings": ["Science", "Languages", "Arts"],
+        "parking": [{"grid":"A3"},{"grid":"D1"},{"grid":"E3"}],
+        "entrances": ["Morrison Street", "Callantina Road"],
+        "reception": "near primary access points",
+        "junior_school_area": {"grid": ["F2","F3"], "features": ["classrooms","play areas","internal pathways"]},
+        "residential_boarding": {"color_on_map": "blue", "distribution": "northern and central areas"}
+      }
+    },
+    "staff": {
+      "leadership": [
+        {"role": "Principal", "name": "Dr Scott Marsh"},
+        {"role": "Vice Principal of Teaching and Learning", "name": "Ms Kristy Irwin"},
+        {"role": "Vice Principal Head of Senior School", "name": "Ms Katrina Brennan"},
+        {"role": "Head of People, Research and Professional Growth", "name": "Dr Caitlin Munday"},
+        {"role": "Chaplain", "name": "Rev David Assender"},
+        {"role": "Chaplain", "name": "Rev Doug Campbell"},
+        {"role": "Dean of Boarding", "name": "Mr Lawson Waser"},
+        {"role": "Dean of Students", "name": "Mr David Brown"},
+        {"role": "Director of School Operations", "name": "Mr Nick Miller"},
+        {"role": "Director of Academic Care", "name": "Ms Verity Scott"},
+        {"role": "Director of Years 7 and 8", "name": "Ms Katrina Stalker"},
+        {"role": "Director of Years 9 and 10", "name": "Ms Emma Gates"},
+        {"role": "Director of Years 11 and 12", "name": "Mr Tim Rayner"},
+        {"role": "Assistant Director of Years 7 and 8", "name": "Mr Robert Blackmore"},
+        {"role": "Director of Teaching and Learning", "name": "Mr Andrew O’Connor"},
+        {"role": "Head of Centre for Learning", "name": "Ms Janet Herbert"},
+        {"role": "Head of Indigenous Education", "name": "Dr Robert Smith"},
+        {"role": "Head of Future Pathways", "name": "Ms Ophelia Hopkins"},
+        {"role": "Head of Psychological Services", "name": "Mr Nick Clark"},
+        {"role": "Coordinator of Transition", "name": "Mr PA (Tony) Glover"},
+        {"role": "Coordinator of House Activities", "name": "Mr Keith Oatley"},
+        {"role": "VCE Coordinator", "name": "Mr Tom Hawkins"}
+      ],
+      "department_heads": [
+        {"department": "Art", "name": "Mr Yudha Scholes"},
+        {"department": "Christian Education", "name": "Mr Cameron Cutchie"},
+        {"department": "Commerce", "name": "Ms Natalka Kostraby"},
+        {"department": "Design and Technology", "name": "Mr Robert Kerins"},
+        {"department": "Drama", "name": "Ms Hayley Sandpearl"},
+        {"department": "English", "name": "Mr Brandon Jenvey"},
+        {"department": "Geography", "name": "Mr Mark Williams"},
+        {"department": "History", "name": "Dr Mark Johnston"},
+        {"department": "Languages", "name": "Ms Karine Coste"},
+        {"department": "Mathematics", "name": "Dr Gareth Ainsworth"},
+        {"department": "Physical Education", "name": "Mr Sam Millar"},
+        {"department": "Science", "name": "Ms Kerrie Ardley"}
+      ],
+      "boarding_houses": [
+        {"house": "Authur Robinson House", "lead": "Ms Claire Jones", "email": "claire.jones@scotch.vic.edu.au"},
+        {"house": "McMeckan House", "lead": "Mr Pino Cutinelli", "email": "pino.cutinelli@scotch.vic.edu.au"},
+        {"house": "School House", "lead": "Mr Andrew Argent", "email": "andrew.argent@scotch.vic.edu.au"}
+      ],
+      "heads_of_house": [
+        {"house": "Bond", "head": "Ms Melanie Piva"},
+        {"house": "Davidson", "head": "Mr Michael Jones"},
+        {"house": "Eggleston", "head": "Mr John Evans"},
+        {"house": "Field", "head": "Mr Josh McNeill"},
+        {"house": "Fleming", "head": "Mr Mark Rivett"},
+        {"house": "Forbes", "head": "Mr Jack Edwards"},
+        {"house": "Gilray", "head": "Mr John Prior"},
+        {"house": "Lawson", "head": "Mr Michael Waugh"},
+        {"house": "Littlejohn", "head": "Mr Ed Smithers"},
+        {"house": "Monash", "head": "Ms Emmie-clare Leckie"},
+        {"house": "Morrison", "head": "Dr Rose Humberstone"},
+        {"house": "Selby Smith", "head": "Mr Peter Karakoussis"}
+      ],
+      "form_group_teachers": {
+        "less_certain": true,
+        "entries": [
+          {"form": "7EE", "teacher": "Mr Ed Elder"},
+          {"form": "7EV", "teacher": "Ms Emma Viney"},
+          {"form": "7JP", "teacher": "Mr Jonathan Pattinson"},
+          {"form": "7HC", "teacher": "Mr Hamish Cox"},
+          {"form": "7LC", "teacher": "Mr Luke Carey"},
+          {"form": "7MP", "teacher": "Mr Matthias Poi"},
+          {"form": "7DR", "teacher": "Mr Dean Russell"},
+          {"form": "7MO", "teacher": "Ms Madeline Owen"},
+          {"form": "7SM", "teacher": "Ms Susan Macdonald"},
+          {"form": "7LC (dup?)", "teacher": "Ms Lisa Castles"},
+          {"form": "8GD", "teacher": "Mr Guney Dogan"},
+          {"form": "8GB", "teacher": "Mr Gary Butcher"},
+          {"form": "8TG", "teacher": "Mr Tony Glover"},
+          {"form": "8JH", "teacher": "Mr Jeremy Hamilton"},
+          {"form": "8BT", "teacher": "Mr Brandon Tilley"},
+          {"form": "8AS", "teacher": "Mr Adam Somes"},
+          {"form": "8PR", "teacher": "Mr Peter Riley"},
+          {"form": "8BM", "teacher": "Mr Brosie McCann"},
+          {"form": "8AK", "teacher": "Mr Arron Knezevic"}
+        ]
+      }
+    },
+    "clubs": [
+      {
+        "name": "Entrepreneur Club",
+        "status": "incomplete_schedule",
+        "schedule": null,
+        "location": null,
+        "coordinator": null,
+        "description": null,
+        "popularity": null,
+        "beginner_friendly": null,
+        "tags": ["entrepreneurship"]
+      },
+      {
+        "name": "Run Club",
+        "schedule": [
+          {"day": "Monday", "time": "07:00"},
+          {"day": "Wednesday", "time": "07:00"}
+        ],
+        "meeting_point": "Green Grandstand",
+        "coordinator": "Conor Sulivan",
+        "type": "sports",
+        "description": "Running/exercise for early risers.",
+        "popularity": "popular",
+        "beginner_friendly": false,
+        "notes": "Non-runners may not enjoy unless trying something new",
+        "tags": ["fitness","running","morning"]
+      },
+      {
+        "name": "Christian Movement",
+        "schedule": [{"day": "Monday", "time": "Lunch"}],
+        "location": "Reading and Discussion room, CFL",
+        "coordinator": "Mr Matthias Poi",
+        "description": "Student-run; games, discussions, talks, workshops about Christianity; open to all backgrounds.",
+        "popularity": "popular",
+        "beginner_friendly": true,
+        "tags": ["faith","discussion","community"]
+      },
+      {
+        "name": "Table Top Games",
+        "schedule": [
+          {"day": "Monday", "time": "Lunch"},
+          {"day": "Wednesday", "time": "Lunch"},
+          {"day": "Thursday", "time": "Lunch"},
+          {"day": "Friday", "time": "Lunch"}
+        ],
+        "location": "Room 5",
+        "coordinator": "Rev David Assender",
+        "description": "Board/RPGs (e.g., DnD); design/story discussion and play.",
+        "popularity": "very_popular",
+        "beginner_friendly": true,
+        "tags": ["boardgames","RPG","storytelling"]
+      },
+      {
+        "name": "Linguistics Club",
+        "schedule": [{"day": "Monday", "time": "Lunch"}],
+        "location": "Room 21",
+        "coordinator": null,
+        "description": null,
+        "popularity": null,
+        "beginner_friendly": null,
+        "tags": ["linguistics"]
+      },
+      {
+        "name": "Media Club",
+        "schedule": [{"day": "Tuesday", "time": "Lunch"}],
+        "location": "Media Classroom, Glenn Center (overlooking Main Oval)",
+        "captain": "Joshua Song",
+        "supervisor": "Ms Katrina Wilson",
+        "description": "Filming/editing; making a School Documentary; good for beginners.",
+        "popularity": "moderate",
+        "beginner_friendly": true,
+        "tags": ["media","film","editing","documentary"]
+      },
+      {
+        "name": "Literature Club",
+        "schedule": [{"day": "Tuesday", "time": "Lunch"}],
+        "location": "Reading and Discussion room, CFL",
+        "description": "English-related discussions/activities.",
+        "tags": ["literature","english"]
+      },
+      {
+        "name": "Philosophy Club",
+        "schedule": [{"day": "Wednesday", "time": "Before school"}],
+        "location": "Harkness room (back of English Department)",
+        "tags": ["philosophy","discussion"]
+      },
+      {
+        "name": "Chess Club",
+        "schedule": [{"day": "Wednesday", "time": "Lunch"}],
+        "location": "Room 39",
+        "description": "Learn/play chess; variants welcome; all skill levels.",
+        "popularity": "very_popular",
+        "beginner_friendly": true,
+        "tags": ["chess","strategy"]
+      },
+      {
+        "name": "History Club",
+        "schedule": [{"day": "Wednesday (occasional)", "time": "Lunch"}],
+        "location": "Reading and Discussion Room, CFL",
+        "popularity": "popular",
+        "tags": ["history"]
+      },
+      {
+        "name": "Year 7 & 8 Games Club",
+        "schedule": [{"day": "Thursday", "time": "Lunch"}],
+        "location": "Reading and Discussion Room, CFL",
+        "coordinator": "Ms Emma Viney",
+        "description": "Board games for Year 7 & 8.",
+        "popularity": "popular",
+        "beginner_friendly": true,
+        "tags": ["boardgames","junior"]
+      },
+      {
+        "name": "DISC",
+        "schedule": [{"day": "Thursday", "time": "Lunch"}],
+        "location": "Room E1.02",
+        "coordinator": "Ms Katrina Brennan",
+        "popularity": "popular",
+        "tags": ["unknown_topic"]
+      },
+      {
+        "name": "Mathematical Society",
+        "schedule": [{"day": "Friday", "time": "Lunch"}],
+        "location": "M1",
+        "coordinator": "Will Cheah",
+        "description": "Olympiad-style problems; prep for AMO/AIMO/AMC etc.; challenging extension.",
+        "popularity": "very_popular",
+        "beginner_friendly": false,
+        "tags": ["maths","olympiad","extension"]
+      },
+      {
+        "name": "Public Speaking Club",
+        "schedule": [{"day": "Friday", "time": "Lunch"}],
+        "location": "Fraser Smith Theatre",
+        "description": "Practice public speaking skills.",
+        "popularity": "very_popular",
+        "beginner_friendly": true,
+        "tags": ["public_speaking","communication"]
+      },
+      {
+        "name": "Lego Club",
+        "schedule": [{"day": "Friday", "time": "Lunch"}],
+        "coordinator": "Ms Emelie Ireson",
+        "description": "Build Lego (incl. Technic) solo/team; relaxed and welcoming.",
+        "popularity": "popular",
+        "beginner_friendly": true,
+        "tags": ["hobby","lego","maker"]
+      }
+    ],
+    "competitions": [
+      {
+        "name": "International Chemistry Quiz (ICQ)",
+        "frequency": "annual",
+        "typical_timing": "start of Term 4 / early August",
+        "format": "30 multiple-choice questions",
+        "focus": ["chemistry knowledge","scientific skills","real-world problem solving"],
+        "notes": "Emphasizes application/creativity over memorisation"
+      },
+      {
+        "name": "Kingswood Academic Challenge (Academic Challenge)",
+        "frequency": "annual",
+        "typical_timing": "start of Term 4",
+        "team_structure": "Groups of 2; mixed into teams of 6 on the day",
+        "subjects": ["Maths","Science","Engineering","English","Code breaking","Public Speaking","more"],
+        "duration": "full day"
+      },
+      {
+        "name": "Da Vinci Decathlon",
+        "frequency": "annual",
+        "team_structure": "Y7/Y8/Y9/Y10 teams of 8",
+        "waves": 3,
+        "subjects": ["English","Engineering","Science","Code Breaking","Art and Poetry","Ideation","Drama","Maths"]
+      },
+      {
+        "name": "DAV Schools League (Debating)",
+        "years": [9,10,11,12],
+        "nights": 5,
+        "day": "Wednesday",
+        "end_times": {"Year9": "21:00", "Year11": "21:00", "Year10": "20:00", "Year12": "20:00"},
+        "training_sessions_until": "18:00 on Wednesdays",
+        "team_structure": {"size": [5,6], "speakers_per_debate": 3, "reserve": 1},
+        "registration": {"who": "Year 9 and above", "method": "collect signup sheet and email Mr Hawkins", "timing": "usually early Term 1"},
+        "notes": "Posters in house rooms with more details"
+      },
+      {"name": "Collegian writing competition", "status": "tbd"},
+      {"name": "Yeoman’s poetry competition", "status": "tbd"},
+      {"name": "ASX sharemarket competition", "status": "tbd"},
+      {"name": "TedxScotch talk", "status": "tbd"},
+      {
+        "name": "Fueling the Future challenge",
+        "type": "engineering",
+        "theme": "hydrogen F1 car",
+        "notes": "Research and design-oriented; good for students interested in engineering"
+      },
+      {
+        "name": "Australian Maths Competition (AMC)",
+        "focus": ["logical thinking","problem solving","mathematics beyond classroom"],
+        "benefits": ["skill development","confidence","persistence"]
+      },
+      {"name": "AMO", "status": "tbd"},
+      {"name": "AIMO", "status": "tbd"},
+      {
+        "name": "Computational and Algorithmic Thinking (CAT)",
+        "focus": ["logical reasoning","computational thinking","problem decomposition"],
+        "relevance": ["coding","engineering","everyday decision making"]
+      },
+      {
+        "name": "German Poetry competition",
+        "years": [7,8,9],
+        "selection": "audition after memorising class poem; top 3 per year",
+        "format": "single day, off-campus; recitation to judge; German-related activities",
+        "benefits": ["speaking practice","professional environment","fun"]
+      }
+    ],
+    "sports_program": {
+      "director_of_sport": "Mr Stuart Powell",
+      "sports": [
+        {"name": "Athletics Junior", "lead": "Ms Karen Kimber"},
+        {"name": "Athletics", "lead": "Mr Stuart Powell"},
+        {"name": "Badminton", "lead": "Mr Danny Tan"},
+        {"name": "Basketball", "lead": "Mr Jack Edwards"},
+        {"name": "Cricket", "lead": "Mr Jay Baker"},
+        {"name": "Cross Country", "lead": "Mr Sam Millar"},
+        {"name": "Cycling", "lead": "Mr Brent Woodlock"},
+        {"name": "Diving", "lead": "Ms Natalia Kostraby"},
+        {"name": "Fencing", "lead": "Mr Michael Ferguson"},
+        {"name": "Football", "lead": "Mr Steven Icke"},
+        {"name": "Futsal", "lead": "Mr Mark Zannoni"},
+        {"name": "Golf", "lead": "Mr Ed Smithers"},
+        {"name": "Gymnastics", "lead": "Ms Elaine Chin"},
+        {"name": "Hockey", "lead": "Dr Rose Humberstone"},
+        {"name": "Lawn Bowls", "lead": "Mr Tom Hawkins"},
+        {"name": "Old Scotch Athletics", "lead": "Rev Doug Campbell"},
+        {"name": "Orienteering", "lead": "Mr Matt Manning"},
+        {"name": "Rowing", "lead": "Mr Tom Woodruff"},
+        {"name": "Ruby Union", "lead": "Mr Richard Bayliss"},
+        {"name": "Sailing", "lead": "Mr Mark Williams"},
+        {"name": "Snowsports", "lead": "Mr Cameron Cutchie"},
+        {"name": "Soccer", "lead": "Mr Mark Zannoni"},
+        {"name": "Squash", "lead": "Mr Jon Ryan"},
+        {"name": "Swimming", "lead": "Mr Peter Karakoussis"},
+        {"name": "Table Tennis", "lead": "Mr Neale Peters"},
+        {"name": "Tennis", "lead": "Mr Tony Glover"},
+        {"name": "Touch Football", "lead": "Mr Hamish Cox"},
+        {"name": "Volleyball", "lead": "Mr Jonathan Pattinson"},
+        {"name": "Water Polo", "lead": "Unknown"},
+        {"name": "Winter Table Tennis", "lead": "Ms Stella Wang"}
+      ]
+    },
+    "services_information": {"assignments": [{"assignee": "Declan", "mission": "TBD"}]},
+    "scotch_explore_information": {"assignments": [{"assignee": "Jeff", "mission": "TBD"}]},
+    "electives_information": {"status": "tbd"}
+  }
+  
