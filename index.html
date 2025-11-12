@@ -159,21 +159,28 @@ function show(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id))
 $$('.nav, .btn[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));show((location.hash||'#home').slice(1));
 
 /* ===== Chat (OpenAI API) ===== */
-const log=byId('log');let datasetData=null;let historyMsgs=[];
+const log=byId('log');
+const DEFAULT_PROMPT=`You are Scotch Atlas, an AI guide to Scotch College. You MUST answer questions ONLY using the information provided in the dataset.json file below.\n\nCRITICAL RULES:\n1. DO NOT use any information from your training data or general knowledge about Scotch College or any other schools.\n2. ONLY use information that is explicitly stated in the dataset.json provided below.\n3. If information is NOT in the dataset, you MUST respond with: "I don't have that information in my dataset. Please consult school staff or official sources."\n4. Do NOT make assumptions, inferences, or guesses beyond what is directly stated in the dataset.\n5. When citing information, quote directly from the dataset.\n6. Be precise with dates, times, locations, and names as they appear in the dataset.\n\n`;
+let promptTemplate=DEFAULT_PROMPT;
+let datasetData=null;
+
+function getSystemMessage(){const basePrompt=(promptTemplate&&promptTemplate.trim())?promptTemplate:DEFAULT_PROMPT;let systemContent=basePrompt;if(datasetData){systemContent+=`\n\nREFERENCE DATASET (dataset.json):\n\n${JSON.stringify(datasetData,null,2)}\n\nRemember: You can ONLY answer using the information in the dataset above. If asked about something not in the dataset, say you don't have that information.`;}else{systemContent+='\n\nWARNING: dataset.json is not loaded. If asked about specific information, respond that the dataset is unavailable.';}return{role:'system',content:systemContent};}
+
+let historyMsgs=[getSystemMessage()];
+
+// 加载 prompt.json
+async function loadPrompt(){try{const res=await fetch('prompt.json');if(!res.ok)throw new Error('Failed to load prompt.json');const data=await res.json();if(data&&typeof data.base_prompt==='string'&&data.base_prompt.trim()){promptTemplate=data.base_prompt.trim();console.log('Prompt loaded successfully');}else{throw new Error('prompt.json is missing "base_prompt"');}return true;}catch(err){console.error('Error loading prompt:',err);promptTemplate=DEFAULT_PROMPT;return false;}finally{historyMsgs[0]=getSystemMessage();}}
+
 // 加载 dataset.json
-async function loadDataset(){try{const res=await fetch('dataset.json');if(!res.ok)throw new Error('Failed to load dataset.json');datasetData=await res.json();console.log('Dataset loaded successfully');return true}catch(err){console.error('Error loading dataset:',err);return false}}
-// 初始化系统消息
-function getSystemMessage(){let systemContent='You are Scotch Atlas, an AI guide to Scotch College. You MUST answer questions ONLY using the information provided in the dataset.json file below.\n\nCRITICAL RULES:\n1. DO NOT use any information from your training data or general knowledge about Scotch College or any other schools.\n2. ONLY use information that is explicitly stated in the dataset.json provided below.\n3. If information is NOT in the dataset, you MUST respond with: "I don\'t have that information in my dataset. Please consult school staff or official sources."\n4. Do NOT make assumptions, inferences, or guesses beyond what is directly stated in the dataset.\n5. When citing information, quote directly from the dataset.\n6. Be precise with dates, times, locations, and names as they appear in the dataset.\n\n';
-if(datasetData){systemContent+='REFERENCE DATASET (dataset.json):\n\n'+JSON.stringify(datasetData,null,2)+'\n\nRemember: You can ONLY answer using the information in the dataset above. If asked about something not in the dataset, say you don\'t have that information.'}
-return{role:'system',content:systemContent}}
-// 初始化消息历史
-historyMsgs=[getSystemMessage()];
+async function loadDataset(){try{const res=await fetch('dataset.json');if(!res.ok)throw new Error('Failed to load dataset.json');datasetData=await res.json();console.log('Dataset loaded successfully');historyMsgs[0]=getSystemMessage();return true;}catch(err){console.error('Error loading dataset:',err);datasetData=null;historyMsgs[0]=getSystemMessage();return false;}}
+
 function addMsg(role,txt){const div=document.createElement('div');div.className='msg';div.innerHTML=`<span class="role ${role}">${role==='assistant'?'Assistant':'You'}:</span>${txt}`;log.appendChild(div);log.scrollTop=log.scrollHeight}
 // 使用 Cloudflare Pages Function 代理（API Key 在后端，不暴露给前端）
 const API_ENDPOINT='/api/chat';
-// 初始化：加载数据集并设置 UI
-(async function initChat(){const loaded=await loadDataset();const modelInfo=byId('modelInfo');const apiKeyContainer=byId('apiKeyContainer');apiKeyContainer.style.display='none';if(typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL){modelInfo.textContent='Model: '+CONFIG.OPENAI_MODEL}else{modelInfo.textContent='Model: GPT-4'}
-if(loaded){addMsg('system','Hi I am the Assistant, I am able to answer questions about Scotch College!')}else{addMsg('system','Warning: Could not load dataset.json. Answers may not be accurate.')}})();
+// 初始化：加载 Prompt 与数据集并设置 UI
+(async function initChat(){const modelInfo=byId('modelInfo');if(typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL){modelInfo.textContent='Model: '+CONFIG.OPENAI_MODEL}else{modelInfo.textContent='Model: GPT-4'}
+const [promptLoaded,datasetLoaded]=await Promise.all([loadPrompt(),loadDataset()]);
+if(datasetLoaded){addMsg('system','Dataset loaded. Ready to answer questions about Scotch College based on dataset.json.');}else{addMsg('system','Warning: Could not load dataset.json. Answers may not be accurate.')}if(!promptLoaded){addMsg('system','Warning: Could not load prompt.json. Using default prompt instructions.');}})();
 // 表单提交
 byId('chatForm').addEventListener('submit',async e=>{e.preventDefault();const t=byId('prompt').value.trim();if(!t)return;
 const model=typeof CONFIG!=='undefined'&&CONFIG.OPENAI_MODEL?CONFIG.OPENAI_MODEL:'gpt-4';

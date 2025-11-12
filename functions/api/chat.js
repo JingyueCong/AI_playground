@@ -46,6 +46,15 @@ export async function onRequestPost(context) {
       })
     });
 
+    if (!openaiResponse.ok) {
+      const errorText = await openaiResponse.text();
+      console.error('OpenAI error response:', errorText);
+      return new Response(errorText, {
+        status: openaiResponse.status,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // 如果是流式响应，直接转发流
     if (body.stream) {
       return new Response(openaiResponse.body, {
